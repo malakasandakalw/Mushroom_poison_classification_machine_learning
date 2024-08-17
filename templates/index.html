@@ -1,0 +1,138 @@
+<h1>INDEX</h1>
+
+
+<form action="/predict" method="post">
+    <div class="form-group">
+        <label for="cap-diameter">Cap Diameter</label>
+        <input type="number" id="cap-diameter" name="cap-diameter"  step="0.01" min="0.00"  required>
+    </div>
+
+    <div class="form-group">
+        <label for="cap-shape">Cap Shape</label>
+        <select id="cap-shape" name="cap-shape">
+            {% for value in cap_shape_values %}
+                <option value="{{value}}">{{value}}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="cap-surface">Cap Surface</label>
+        <select id="cap-surface" name="cap-surface">
+            {% for value in cap_surface_values %}
+                <option value="{{value}}">{{value}}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="cap-color">Cap Color</label>
+        <select id="cap-color" name="cap-color">
+            {% for value in cap_color_values %}
+                <option value="{{value}}">{{value}}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="does-bruise-or-bleed">Does bruise or bleed</label>
+        <select id="does-bruise-or-bleed" name="does-bruise-or-bleed">
+            {% for value in does_bruise_or_bleed_values %}
+                <option value="{{value}}">{{value}}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="gill-attachment">Gill attachment</label>
+        <select id="gill-attachment" name="gill-attachment">
+            {% for value in gill_attachment_values %}
+                <option value="{{value}}">{{value}}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="gill-spacing">Gill Spacing</label>
+        <select id="gill-spacing" name="gill-spacing">
+            {% for value in gill_spacing_values %}
+                <option value="{{value}}">{{value}}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="gill-color">Gill Color</label>
+        <select id="gill-color" name="gill-color">
+            {% for value in gill_color_values %}
+                <option value="{{value}}">{{value}}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="stem-height">Stem Height</label>
+        <input type="number" id="stem-height" name="stem-height"  step="0.01" min="0.00"  required>
+    </div>
+
+    <div class="form-group">
+        <label for="stem-width">Stem Width</label>
+        <input type="number" id="stem-width" name="stem-width"  step="0.01" min="0.00"  required>
+    </div>
+
+    <div class="form-group">
+        <label for="stem-surface">Stem Surface</label>
+        <select id="stem-surface" name="stem-surface">
+            {% for value in stem_surface_values %}
+                <option value="{{value}}">{{value}}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="stem-color">Stem Color</label>
+        <select id="stem-color" name="stem-color">
+            {% for value in stem_color_values %}
+                <option value="{{value}}">{{value}}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="has-ring">Has Ring</label>
+        <select id="has-ring" name="has-ring">
+            {% for value in has_ring_values %}
+                <option value="{{value}}">{{value}}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="ring-type">Ring Type</label>
+        <select id="ring-type" name="ring-type">
+            {% for value in ring_type_values %}
+                <option value="{{value}}">{{value}}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="habitat">Habitat</label>
+        <select id="habitat" name="habitat">
+            {% for value in habitat_values %}
+                <option value="{{value}}">{{value}}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="season">Season</label>
+        <select id="season" name="season">
+            {% for value in season_values %}
+                <option value="{{value}}">{{value}}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <input type="submit" value="Submit">
+</form>
