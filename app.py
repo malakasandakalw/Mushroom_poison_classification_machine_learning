@@ -2,7 +2,10 @@ from flask import Flask, request, render_template
 import pandas as pd
 import pickle
 import numpy as np
-from sklearn.preprocessing import OrdinalEncoder
+from sklearn.preprocessing import StandardScaler, OrdinalEncoder
+from sklearn.impute import SimpleImputer
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
 
 app = Flask(__name__)
 
@@ -15,24 +18,24 @@ app = Flask(__name__)
 #     unique_values[column] = df[column].dropna().unique()
 
 # unique_df = pd.DataFrame(dict([(k, pd.Series(v)) for k, v in unique_values.items()]))
-# unique_df.to_csv('unique_values.csv', index=False)
+# unique_df.to_csv('unique_values_new.csv', index=False)
 
 
-df = pd.read_csv('./unique_values.csv')
+df = pd.read_csv('./unique_values_new.csv')
 
-cap_shape_values = df['cap-shape'].unique()
-cap_surface_values = df['cap-surface'].unique()
-cap_color_values = df['cap-color'].unique()
-does_bruise_or_bleed_values = df['does-bruise-or-bleed'].unique()
-gill_attachment_values = df['gill-attachment'].unique()
-gill_spacing_values = df['gill-spacing'].unique()
-gill_color_values = df['gill-color'].unique()
-stem_surface_values = df['stem-surface'].unique()
-stem_color_values = df['stem-color'].unique()
-has_ring_values = df['has-ring'].unique()
-ring_type_values = df['ring-type'].unique()
-habitat_values = df['habitat'].unique()
-season_values = df['season'].unique()
+cap_shape_values = df['cap-shape'].dropna().unique()
+cap_surface_values = df['cap-surface'].dropna().unique()
+cap_color_values = df['cap-color'].dropna().unique()
+does_bruise_or_bleed_values = df['does-bruise-or-bleed'].dropna().unique()
+gill_attachment_values = df['gill-attachment'].dropna().unique()
+gill_spacing_values = df['gill-spacing'].dropna().unique()
+gill_color_values = df['gill-color'].dropna().unique()
+stem_surface_values = df['stem-surface'].dropna().unique()
+stem_color_values = df['stem-color'].dropna().unique()
+has_ring_values = df['has-ring'].dropna().unique()
+ring_type_values = df['ring-type'].dropna().unique()
+habitat_values = df['habitat'].dropna().unique()
+season_values = df['season'].dropna().unique()
 
 @app.route('/')
 def home():
@@ -54,33 +57,38 @@ def home():
 
 
 # predictions
-xgb_model = pickle.load(open("./xgb_model.pkl", "rb"))
+xgb_model = pickle.load(open("./new/xgb_model.pkl", "rb"))
+numerical_transformer_pipeline = pickle.load(open("./new/numerical_pipeline.pkl", "rb"))
+categorical_transformer_pipeline = pickle.load(open("./new/categorical_pipeline.pkl", "rb"))
+label_encoder = pickle.load(open("./new/label_encoder.pkl", "rb"))
+imputer_encoder_processor = pickle.load(open("./new/imputer_encoder_pipeline.pkl", "rb"))
 
 form_params = (
     "cap-diameter", "cap-shape", "cap-surface", "cap-color", "does-bruise-or-bleed", "gill-attachment", "gill-spacing", "gill-color", "stem-height",
     "stem-width", "stem-surface", "stem-color", "has-ring", "ring-type", "habitat", "season"
 )
 
-cat_features = [ "cap-shape", "cap-surface", "cap-color", "does-bruise-or-bleed", "gill-attachment", "gill-spacing", "gill-color", "stem-surface", "stem-color", "has-ring", "ring-type", "habitat", "season"]
+cat_features = ['cap-shape', 'cap-surface', 'cap-color', 'does-bruise-or-bleed',
+       'gill-attachment', 'gill-spacing', 'gill-color', 'stem-surface',
+       'stem-color', 'has-ring', 'ring-type', 'habitat', 'season']
 
 @app.post('/predict')
 def prediction():
-    form=request.form
-    print(f"{form}")
-    data={}
+    form = request.form
+    data = {}
     for param in form_params:
-       param_value=form.get(param)
-       print(f"{param} : {param_value}")
-       data[param]=float(param_value) if 'diameter' in param or 'height' in param or 'width' in param else param_value
-    data_frame=pd.DataFrame(data, index=[0])
-    ordinal_encoder = OrdinalEncoder()
-    encoded_ordinal_features = ordinal_encoder.fit_transform(data_frame[cat_features])
-    data_frame[cat_features] = encoded_ordinal_features
-    final_features = data_frame.values
-    prediction = xgb_model.predict(final_features)[0]
-    result = 'Edible' if prediction == 0 else 'Poisonous'
-    print(f"*******Result: {result}")
-    return render_template("result.html", predicted=result)
+        param_value = form.get(param)
+        data[param] = float(param_value) if 'diameter' in param or 'height' in param or 'width' in param else param_value
+
+    data_frame = pd.DataFrame(data, index=[0])
+    
+    processed_data = imputer_encoder_processor.transform(data_frame)
+
+    prediction = xgb_model.predict(processed_data)
+
+    predicted_class = label_encoder.inverse_transform(prediction)[0]
+
+    return render_template("result.html", predicted=predicted_class)
 
 if __name__ == '__main__':
    app.debug = True
