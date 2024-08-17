@@ -1,151 +1,218 @@
-<h1>INDEX</h1>
+<!doctype html>
+<html lang="en">
 
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Poison Mushroom Classification</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
 
-<form action="/predict" method="post">
-    <div class="form-group">
-        <label for="cap-diameter">Cap Diameter</label>
-        <input type="number" id="cap-diameter" name="cap-diameter"  step="0.01" min="0.00" >
+<body>
+    <div class="container mb-5" style="max-width: 680px;">
+        <h1 class="my-4 py-4 text-center">Classify Whether Mushroom is Edible or Poison</h1>
+        <form action="/predict" method="post">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="cap-diameter" class="form-label">Cap Diameter</label>
+                        <input class="form-control" type="number" id="cap-diameter" name="cap-diameter" step="0.01"
+                            min="0.00" required>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label" for="cap-shape">Cap Shape</label>
+                        <select class="form-control" id="cap-shape" name="cap-shape">
+                            <option value="" selected>Select value</option>
+                            {% for value in cap_shape_values %}
+                            <option value="{{value}}">{{value}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label" for="cap-surface">Cap Surface</label>
+                        <select class="form-control" id="cap-surface" name="cap-surface">
+                            <option value="" selected>Select value</option>
+                            {% for value in cap_surface_values %}
+                            <option value="{{value}}">{{value}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label" for="cap-color">Cap Color</label>
+                        <select class="form-control" id="cap-color" name="cap-color">
+                            <option value="" selected>Select value</option>
+                            {% for value in cap_color_values %}
+                            <option value="{{value}}">{{value}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            
+            <hr>
+
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label" for="does-bruise-or-bleed">Does bruise or bleed</label>
+                        <select class="form-control" id="does-bruise-or-bleed" name="does-bruise-or-bleed">
+                            <option value="" selected>Select value</option>
+                            {% for value in does_bruise_or_bleed_values %}
+                            <option value="{{value}}">{{value}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            
+            <hr>
+
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label" for="gill-attachment">Gill attachment</label>
+                        <select class="form-control" id="gill-attachment" name="gill-attachment">
+                            <option value="" selected>Select value</option>
+                            {% for value in gill_attachment_values %}
+                            <option value="{{value}}">{{value}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label" for="gill-spacing">Gill Spacing</label>
+                        <select class="form-control" id="gill-spacing" name="gill-spacing">
+                            <option value="" selected>Select value</option>
+                            {% for value in gill_spacing_values %}
+                            <option value="{{value}}">{{value}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label" for="gill-color">Gill Color</label>
+                        <select class="form-control" id="gill-color" name="gill-color">
+                            <option value="" selected>Select value</option>
+                            {% for value in gill_color_values %}
+                            <option value="{{value}}">{{value}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label" for="stem-height">Stem Height</label>
+                        <input class="form-control" type="number" id="stem-height" name="stem-height" step="0.01"
+                            min="0.00"required>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label" for="stem-width">Stem Width</label>
+                        <input class="form-control" type="number" id="stem-width" name="stem-width" step="0.01"
+                            min="0.00"required>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label" for="stem-surface">Stem Surface</label>
+                        <select class="form-control" id="stem-surface" name="stem-surface">
+                            <option value="" selected>Select value</option>
+                            {% for value in stem_surface_values %}
+                            <option value="{{value}}">{{value}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label" for="stem-color">Stem Color</label>
+                        <select class="form-control" id="stem-color" name="stem-color">
+                            <option value="" selected>Select value</option>
+                            {% for value in stem_color_values %}
+                            <option value="{{value}}">{{value}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label" for="has-ring">Has Ring</label>
+                        <select class="form-control" id="has-ring" name="has-ring">
+                            <option value="" selected>Select value</option>
+                            {% for value in has_ring_values %}
+                            <option value="{{value}}">{{value}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label" for="ring-type">Ring Type</label>
+                        <select class="form-control" id="ring-type" name="ring-type">
+                            <option value="" selected>Select value</option>
+                            {% for value in ring_type_values %}
+                            <option value="{{value}}">{{value}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label" for="habitat">Habitat</label>
+                        <select class="form-control" id="habitat" name="habitat">
+                            <option value="" selected>Select value</option>
+                            {% for value in habitat_values %}
+                            <option value="{{value}}">{{value}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label" for="season">Season</label>
+                        <select class="form-control" id="season" name="season">
+                            <option value="" selected>Select value</option>
+                            {% for value in season_values %}
+                            <option value="{{value}}">{{value}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <input type="submit" value="Submit" class="btn btn-primary mt-3 w-100">
+        </form>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+</body>
 
-    <div class="form-group">
-        <label for="cap-shape">Cap Shape</label>
-        <select id="cap-shape" name="cap-shape">
-            <option value="" selected>Select value</option>
-            {% for value in cap_shape_values %}
-                <option value="{{value}}">{{value}}</option>
-            {% endfor %}
-        </select>
-    </div>
-
-    <div class="form-group">
-        <label for="cap-surface">Cap Surface</label>
-        <select id="cap-surface" name="cap-surface">
-            <option value="" selected>Select value</option>
-            {% for value in cap_surface_values %}
-                <option value="{{value}}">{{value}}</option>
-            {% endfor %}
-        </select>
-    </div>
-
-    <div class="form-group">
-        <label for="cap-color">Cap Color</label>
-        <select id="cap-color" name="cap-color">
-            <option value="" selected>Select value</option>
-            {% for value in cap_color_values %}
-                <option value="{{value}}">{{value}}</option>
-            {% endfor %}
-        </select>
-    </div>
-
-    <div class="form-group">
-        <label for="does-bruise-or-bleed">Does bruise or bleed</label>
-        <select id="does-bruise-or-bleed" name="does-bruise-or-bleed">
-            <option value="" selected>Select value</option>
-            {% for value in does_bruise_or_bleed_values %}
-                <option value="{{value}}">{{value}}</option>
-            {% endfor %}
-        </select>
-    </div>
-
-    <div class="form-group">
-        <label for="gill-attachment">Gill attachment</label>
-        <select id="gill-attachment" name="gill-attachment">
-            <option value="" selected>Select value</option>
-            {% for value in gill_attachment_values %}
-                <option value="{{value}}">{{value}}</option>
-            {% endfor %}
-        </select>
-    </div>
-
-    <div class="form-group">
-        <label for="gill-spacing">Gill Spacing</label>
-        <select id="gill-spacing" name="gill-spacing">
-            <option value="" selected>Select value</option>
-            {% for value in gill_spacing_values %}
-                <option value="{{value}}">{{value}}</option>
-            {% endfor %}
-        </select>
-    </div>
-
-    <div class="form-group">
-        <label for="gill-color">Gill Color</label>
-        <select id="gill-color" name="gill-color">
-            <option value="" selected>Select value</option>
-            {% for value in gill_color_values %}
-                <option value="{{value}}">{{value}}</option>
-            {% endfor %}
-        </select>
-    </div>
-
-    <div class="form-group">
-        <label for="stem-height">Stem Height</label>
-        <input type="number" id="stem-height" name="stem-height"  step="0.01" min="0.00">
-    </div>
-
-    <div class="form-group">
-        <label for="stem-width">Stem Width</label>
-        <input type="number" id="stem-width" name="stem-width"  step="0.01" min="0.00">
-    </div>
-
-    <div class="form-group">
-        <label for="stem-surface">Stem Surface</label>
-        <select id="stem-surface" name="stem-surface">
-            <option value="" selected>Select value</option>
-            {% for value in stem_surface_values %}
-                <option value="{{value}}">{{value}}</option>
-            {% endfor %}
-        </select>
-    </div>
-
-    <div class="form-group">
-        <label for="stem-color">Stem Color</label>
-        <select id="stem-color" name="stem-color">
-            <option value="" selected>Select value</option>
-            {% for value in stem_color_values %}
-                <option value="{{value}}">{{value}}</option>
-            {% endfor %}
-        </select>
-    </div>
-
-    <div class="form-group">
-        <label for="has-ring">Has Ring</label>
-        <select id="has-ring" name="has-ring">
-            <option value="" selected>Select value</option>
-            {% for value in has_ring_values %}
-                <option value="{{value}}">{{value}}</option>
-            {% endfor %}
-        </select>
-    </div>
-
-    <div class="form-group">
-        <label for="ring-type">Ring Type</label>
-        <select id="ring-type" name="ring-type">
-            <option value="" selected>Select value</option>
-            {% for value in ring_type_values %}
-                <option value="{{value}}">{{value}}</option>
-            {% endfor %}
-        </select>
-    </div>
-
-    <div class="form-group">
-        <label for="habitat">Habitat</label>
-        <select id="habitat" name="habitat">
-            <option value="" selected>Select value</option>
-            {% for value in habitat_values %}
-                <option value="{{value}}">{{value}}</option>
-            {% endfor %}
-        </select>
-    </div>
-
-    <div class="form-group">
-        <label for="season">Season</label>
-        <select id="season" name="season">
-            <option value="" selected>Select value</option>
-            {% for value in season_values %}
-                <option value="{{value}}">{{value}}</option>
-            {% endfor %}
-        </select>
-    </div>
-
-    <input type="submit" value="Submit">
-</form>
+</html>
