@@ -58,8 +58,6 @@ def home():
 
 # predictions
 xgb_model = pickle.load(open("./imports/xgb_model.pkl", "rb"))
-numerical_transformer_pipeline = pickle.load(open("./imports/numerical_pipeline.pkl", "rb"))
-categorical_transformer_pipeline = pickle.load(open("./imports/categorical_pipeline.pkl", "rb"))
 label_encoder = pickle.load(open("./imports/label_encoder.pkl", "rb"))
 imputer_encoder_processor = pickle.load(open("./imports/imputer_encoder_pipeline.pkl", "rb"))
 
